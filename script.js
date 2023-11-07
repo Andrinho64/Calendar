@@ -1,3 +1,5 @@
+/* eslint-disable sonarjs/cognitive-complexity */
+/* eslint-disable complexity */
 const createDaysOfTheWeek = () => {
   const weekDays = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
   const weekDaysList = document.querySelector('.week-days');
@@ -13,7 +15,12 @@ const createDaysOfTheWeek = () => {
 
 createDaysOfTheWeek();
 
-const decemberDaysList = [29, 30, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+const decemberDaysList = [
+  29, 30, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+  16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+];
+const friday = [4, 11, 18, 25];
+const holiday = [24, 25, 31];
 
 // Escreva seu código abaixo.
 
@@ -21,23 +28,24 @@ const decemberDaysList = [29, 30, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
 
 function createCalendar() {
   const days = document.getElementById('days');
-  const friday = [4, 11, 18, 25];
 
-  decemberDaysList.forEach(day => {
+  for (let index = 0; index < decemberDaysList.length; index += 1) {
+    const day = decemberDaysList[index];
+
     const liElement = document.createElement('li');
     liElement.classList.add('day');
-    liElement.textContent = day;
-
-    if (day === 24 || day === 25 || day === 31) {
-      liElement.classList.add('holiday');
-    }
+    liElement.innerText = day;
 
     if (friday.includes(day)) {
       liElement.classList.add('friday');
     }
 
+    if (holiday.includes(day)) {
+      liElement.classList.add('holiday');
+    }
+
     days.appendChild(liElement);
-  });
+  }
 }
 
 createCalendar();
@@ -48,41 +56,39 @@ dos dias que possuem a classe "holiday" */
 const botaoFeriado = document.getElementById('btn-holiday');
 const classHoliday = document.getElementsByClassName('holiday');
 
-let botao = true;
+let estadoBtnFeriado = false;
 
 botaoFeriado.addEventListener('click', () => {
-  Array.from(classHoliday).forEach(element => {
-    element.style.backgroundColor = botao ? 'white' : 'rgb(238,238,238)';
-  });
-  botao = !botao;
+  for (let index = 0; index < classHoliday.length; index += 1) {
+    if (estadoBtnFeriado === false) {
+      classHoliday[index].style.backgroundColor = 'yellow';
+    } else {
+      classHoliday[index].style.backgroundColor = 'rgb(238,238,238)';
+    }
+  }
+  estadoBtnFeriado = !estadoBtnFeriado;
 });
 
 /* Exercício 3 – Implemente uma função que modifica o texto exibido
 nos dias que são sextas-feiras */
 
-const botaoSextaFeira = document.getElementById('btn-friday');
-const classFriday = document.getElementsByClassName('friday');
-const diasOriginal = [];
+const botaoSexta = document.getElementById('btn-friday');
+const sextas = document.getElementsByClassName('friday');
 
-Array.from(classFriday).forEach(element => {
-  diasOriginal.push(element.innerText);
-});
+let estadoBtnSexta = false;
 
-let botaoSexta = true;
-
-botaoSextaFeira.addEventListener('click', () => {
-  if (botaoSexta === true) {
-    Array.from(classFriday).forEach((element) => {
-      element.innerText = 'Sextou!! =]';
-    });
-    botaoSexta = false;
-  } else if (botaoSexta === false) {
-    Array.from(classFriday).forEach((element, index) => {
-      element.innerText = diasOriginal[index];
-    });
-    botaoSexta = true;
+function sextou() {
+  for (let index = 0; index < sextas.length; index += 1) {
+    if (estadoBtnSexta === false) {
+      sextas[index].innerText = 'Sextou! =]';
+    } else {
+      sextas[index].innerText = friday[index];
+    }
   }
-});
+  estadoBtnSexta = !estadoBtnSexta;
+}
+
+botaoSexta.addEventListener('click', sextou);
 
 /* Exercício 4 – Implemente duas funções que criem um efeito de "zoom" */
 
